@@ -1,13 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Biblioteca_js_1 = require("./Biblioteca.js");
+import { BibliotecaLivros } from "./Biblioteca.js";
 let buttonList = document.getElementById('BotãoListar');
-let lista = document.getElementById('listaLivros');
-buttonList.onclick = botaoClicado;
-function botaoClicado() {
+let lista = document.getElementById('resultado');
+export function botaoClicado() {
     lista.innerHTML = '';
     let livros;
-    livros = Biblioteca_js_1.BibliotecaLivros.listarLivro();
+    livros = BibliotecaLivros.listarLivro();
     let i;
     for (i = 0; i < livros.length; i++) {
         let novoLi = converterLivrosParaLi(livros[i]);

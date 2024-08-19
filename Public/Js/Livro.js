@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Livro = void 0;
-class Livro {
+export class Livro {
     constructor(data_publicacao, titulo, autor, categoria) {
         this.titulo = titulo;
         this.autor = autor;
@@ -10,4 +7,3 @@ class Livro {
         this.disponivel = true;
     }
 }
-exports.Livro = Livro;

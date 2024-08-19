@@ -1,2 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+import { cadastrarLivros } from './CadastrarLivros.js';
+import { botaoClicado } from './ListarLivro.js';
+let buttonList = document.getElementById('BotãoListar');
+let lista = document.getElementById('resultado');
+cadastrarLivros();
+buttonList.onclick = botaoClicado;
