@@ -1,17 +1,7 @@
 import { Livro } from "./Livro.js";
 import { BibliotecaLivros } from "./Biblioteca.js";
 
-let titulo : string = document.getElementById('titulo');
-let autor : HTMLElement = document.getElementById('autor');
-let data_publicacao : HTMLElement = document.getElementById('data_publicacao');
-let categoria : HTMLElement = document.getElementById('categoria');
-
-
-let buttonList : HTMLElement = document.getElementById('BotãoListar');
-let buttonAdd : HTMLElement = document.getElementById('adicionar');
-let buttonRemove : HTMLElement = document.getElementById('remover');
-let buttonSearch : HTMLElement = document.getElementById('buscar');
-let lista : HTMLElement = document.getElementById('resultado');
+const lista : HTMLElement = document.getElementById('resultado');
 
 export function botaoListClicado(){
     lista.innerHTML = '';
@@ -25,31 +15,38 @@ export function botaoListClicado(){
 }
 
 export function botaoAddClicado(){
-    lista.innerHTML = '';
-    let livros : Livro[];
-    livros = BibliotecaLivros.cadastrarLivro(data_publicacao,titulo,autor,categoria);
-    let i;
-    for(i=0;i<livros.length;i++){
-        let novoLi = converterLivrosParaLi(livros[i]);
-        lista.append(novoLi);
-    }
+    let titulo = (document.getElementById('titulo') as HTMLInputElement).value;
+    let autor = (document.getElementById('autor') as HTMLInputElement).value;
+    let data_publicacao = new Date((document.getElementById('data_publicacao') as HTMLInputElement).value);
+    let categoria = (document.getElementById('categoria') as HTMLInputElement).value;
+    console.log(titulo);
+    console.log(autor);
+    console.log(categoria);
+    console.log(data_publicacao);
+    BibliotecaLivros.cadastrarLivro(data_publicacao,titulo,autor,categoria);
+    BibliotecaLivros.listarLivro();
+    mostrarMensagem('Livro '+titulo+' cadastrado com sucesso')
 }
+
+
 export function botaoRemoveClicado(){
-    lista.innerHTML = '';
-    let livros : Livro[];
-    livros = BibliotecaLivros.listarLivro();
-    let i;
-    for(i=0;i<livros.length;i++){
-        let novoLi = converterLivrosParaLi(livros[i]);
-        lista.append(novoLi);
-    }
+    let titulo = (document.getElementById('titulo') as HTMLInputElement).value;
+    BibliotecaLivros.removerLivro(titulo);
+    BibliotecaLivros.listarLivro();
+    mostrarMensagem('Livro '+titulo+' removido com sucesso')
 }
 export function botaoSearchClicado(){
-    lista.innerHTML = '';
-    let livros : Livro[];
+    let titulo = (document.getElementById('titulo') as HTMLInputElement).value;
+    let livros : Livro;
     livros = BibliotecaLivros.buscarLivro(titulo);
-    let novoLi = converterLivrosParaLi(livros);
-    lista.append(novoLi);
+    console.log(livros);
+    if(livros){
+        lista.innerHTML = '';
+        let novoLi = converterLivrosParaLi(livros);
+        lista.append(novoLi);
+    } else {
+        mostrarMensagem(`Livro ${titulo} não encontrado.`);
+    }
 }
 
 
@@ -57,4 +54,12 @@ function converterLivrosParaLi(livros:Livro):HTMLElement{
     let novoLi = document.createElement('li');
     novoLi.innerHTML = 'Titulo: ' + livros.titulo + '<br> Autor: ' + livros.autor +'<br>Categoria: '+livros.categoria+' <br> Disponivel: R$ ' + livros.disponivel +'<br>';
     return novoLi;
+}
+
+
+function mostrarMensagem(mensagem: string) {
+    let resultadoDiv = document.getElementById('resultado');
+    if(resultadoDiv) {
+        resultadoDiv.innerHTML = mensagem;
+    }
 }

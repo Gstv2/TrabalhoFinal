@@ -1,5 +1,4 @@
 import { Livro } from "./Livro.js";
-import { cadastrarLivros } from "./CadastrarLivros.js";
 export class Biblioteca {
     constructor() {
         this.livros = [];
@@ -43,4 +42,3 @@ export class Biblioteca {
     }
 }
 export let BibliotecaLivros = new Biblioteca();
-cadastrarLivros();

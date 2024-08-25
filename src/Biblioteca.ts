@@ -1,5 +1,4 @@
 import { Livro } from "./Livro.js";
-import { cadastrarLivros } from "./CadastrarLivros.js";
 
 export class Biblioteca{
     livros: Livro[];
