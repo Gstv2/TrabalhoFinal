@@ -1,16 +1,16 @@
 import { Livro } from "./Livro.js";
 import { BibliotecaLivros } from "./Biblioteca.js";
 
-const lista : HTMLElement = document.getElementById('resultado');
 
 export function botaoListClicado(){
+    const lista : HTMLElement = document.getElementById('resultado');
     lista.innerHTML = '';
     let livros : Livro[];
     livros = BibliotecaLivros.listarLivro();
     let i;
     for(i=0;i<livros.length;i++){
-        let novoLi = converterLivrosParaLi(livros[i]);
-        lista.append(novoLi);
+        let novoCard = converterLivrosParaCard(livros[i]);
+        lista.append(novoCard);
     }
 }
 
@@ -36,26 +36,31 @@ export function botaoRemoveClicado(){
     mostrarMensagem('Livro '+titulo+' removido com sucesso')
 }
 export function botaoSearchClicado(){
-    let titulo = (document.getElementById('titulo') as HTMLInputElement).value;
+    const lista : HTMLElement = document.getElementById('resultado');
+    let titulo = (document.getElementById('tituloSearch') as HTMLInputElement).value;
     let livros : Livro;
     livros = BibliotecaLivros.buscarLivro(titulo);
     console.log(livros);
     if(livros){
         lista.innerHTML = '';
-        let novoLi = converterLivrosParaLi(livros);
-        lista.append(novoLi);
+        let novoCard = converterLivrosParaCard(livros);
+        lista.append(novoCard);
     } else {
-        mostrarMensagem(`Livro ${titulo} não encontrado.`);
+        mostrarMensagem('Livro '+titulo+ ' não encontrado.');
     }
 }
 
 
-function converterLivrosParaLi(livros:Livro):HTMLElement{
-    let novoLi = document.createElement('li');
-    novoLi.innerHTML = 'Titulo: ' + livros.titulo + '<br> Autor: ' + livros.autor +'<br>Categoria: '+livros.categoria+' <br> Disponivel: R$ ' + livros.disponivel +'<br>';
-    return novoLi;
+function converterLivrosParaCard(livro: Livro): HTMLElement {
+    let novoCard = document.createElement('div');
+    novoCard.classList.add('card', 'mb-3');
+    novoCard.innerHTML = 
+        '<h5 class="card-title">Título do Livro: ' + livro.titulo + '</h5>' +
+        '<p class="card-text">Autor: ' + livro.autor + '</p>' +
+        '<p class="card-text">Categoria: ' + livro.categoria + '</p>' +
+        '<p class="card-text">Data de Publicação: ' + livro.disponivel + '</p>';
+    return novoCard;
 }
-
 
 function mostrarMensagem(mensagem: string) {
     let resultadoDiv = document.getElementById('resultado');

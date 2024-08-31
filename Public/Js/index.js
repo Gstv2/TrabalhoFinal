@@ -1,6 +1,6 @@
 import { cadastrarLivros } from './CadastrarLivros.js';
 import { botaoAddClicado, botaoRemoveClicado, botaoSearchClicado, botaoListClicado } from './ListarLivro.js';
-let buttonList = document.getElementById('BotãoListar');
+let buttonList = document.getElementById('Listar');
 let buttonAdd = document.getElementById('adicionar');
 let buttonRemove = document.getElementById('remover');
 let buttonSearch = document.getElementById('buscar');
