@@ -3,176 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Biblioteca</title>
+    <title>Sistema de biblioteca</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f7f7f7;
-            font-family: Arial, sans-serif;
-        }
-
-        .navbar {
-            background-color: #34495e;
-            padding: 1rem;
-        }
-
-        .navbar-brand {
-            color: #ecf0f1;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-
-        .form-inline {
-            flex-grow: 1;
-        }
-
-        .form-control {
-            width: 100%;
-        }
-
-        .sidebar {
-            height: 100vh;
-            width: 200px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            background-color: #34495e;
-            padding-top: 20px;
-            z-index: 1000;
-        }
-
-        .sidebar button {
-            width: 100%;
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-
-        .content {
-            margin-left: 220px;
-            padding: 20px;
-        }
-
-        .card {
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .card-text {
-            color: #34495e;
-        }
-
-        .btn-primary {
-            background-color: #27ae60;
-            border-color: #27ae60;
-        }
-
-        .btn-danger {
-            background-color: #e74c3c;
-            border-color: #e74c3c;
-        }
-
-        .btn-warning {
-            background-color: #f39c12;
-            border-color: #f39c12;
-        }
-
-        .btn-info {
-            background-color: #2980b9;
-            border-color: #2980b9;
-        }
-
-        #resultado {
-            background-color: #ecf0f1;
-        }
-
-        /* Modal styles */
-        .modal-header {
-            background-color: #34495e;
-            color: #ecf0f1;
-        }
-    </style>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Sistema de Biblioteca</a>
-            <form class="d-flex form-inline">
-                <input class="form-control me-2" type="search" placeholder="Pesquisar Livros" aria-label="Pesquisar" id="tituloSearch">
-                <button class="btn btn-outline-light" type="submit">Pesquisar</button>
-            </form>
+<body class="container mt-5">
+    <h1 class="mb-4">Cadastro de Livros</h1>
+    <form id="produtoForm">
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Titulo:</label>
+            <input type="text" class="form-control" id="titulo" required>
         </div>
-    </nav>
-
-    <div class="sidebar">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#livroModal">Adicionar Livro</button>
-        <button type="button" class="btn btn-danger" id="remover">Remover Livro</button>
-        <button type="button" class="btn btn-info" id="Listar">Listar Livros</button>
-    </div>
-
-    <div class="content">
-        <h1>Livros Cadastrados</h1>
-
-        <div id="resultado" class="mt-3">
-            <!-- Os livros cadastrados aparecerão aqui em forma de cards -->
-            <div class="card">
-                <h5 class="card-title">Título do Livro</h5>
-                <p class="card-text">Autor: Autor Exemplo</p>
-                <p class="card-text">Categoria: Categoria Exemplo</p>
-                <p class="card-text">Data de Publicação: 01/01/2023</p>
-            </div>
-            <!-- Adicione mais cards conforme necessário -->
+        <div class="mb-3">
+            <label for="autor" class="form-label">Autor:</label>
+            <input type="text" class="form-control" id="autor" required>
         </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="livroModal" tabindex="-1" aria-labelledby="livroModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="livroModalLabel">Cadastro de Livro</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="produtoForm">
-                        <div class="mb-3">
-                            <label for="data_publicacao" class="form-label">Data Publicação:</label>
-                            <input type="date" class="form-control" id="data_publicacao">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="titulo" class="form-label">Título:</label>
-                            <input type="text" class="form-control" id="titulo">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="autor" class="form-label">Autor:</label>
-                            <input type="text" class="form-control" id="autor">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="categoria" class="form-label">Categoria:</label>
-                            <input type="text" class="form-control" id="categoria">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="adicionar">Salvar Livro</button>
-                </div>
-            </div>
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoria:</label>
+            <input type="text" class="form-control" id="categoria" required>
         </div>
-    </div>
+        <div class="d-flex gap-2">
+            <button type="button" id="adicionar" class="btn btn-primary">Adicionar Produto</button>
+            <button type="button" id="remover" class="btn btn-danger">Remover Produto</button>
+            <button type="button" id="buscar" class="btn btn-warning">Buscar Produto</button>
+            <button type="button" id="BotãoListar" class="btn btn-info">Listar Produtos</button>
+            <button type="button" id="alugar" class="btn btn-warning">emprestar Produto</button>
+            <button type="button" id="devolver" class="btn btn-info">Devolver Produtos</button>
+        </div>
+    </form>
 
+    <h2 class="mt-4">Resultado:</h2>
+    <div id="resultado" class="mt-3 p-3 border rounded">
+        
+    </div>
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="./Js/index.js"></script>

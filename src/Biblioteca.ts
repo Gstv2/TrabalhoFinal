@@ -6,41 +6,60 @@ export class Biblioteca{
     constructor(){
         this.livros = [];
     }
-
-    cadastrarLivro(data_publicacao:Date,titulo:string,autor:string,categoria:string){
-        let novoLivro = new Livro(data_publicacao,titulo,autor,categoria);
+    cadastrarLivro(titulo:string,autor:string,categoria:string){
+        let novoLivro = new Livro(titulo,autor,categoria);
         this.livros.push(novoLivro);
     }
-
-    removerLivro(titulo:string):boolean{
-        let posicao : number | undefined;
-        posicao = this.buscarPosicaoLivro(titulo);
+    removerLivro(titulo:string,autor:string,categoria:string):boolean{
+        let posicao : number[] | undefined;
+        let i:number;
+        posicao = this.buscarPosicaoLivro(titulo,autor,categoria);
         if(posicao!=undefined){
-            this.livros.splice(posicao,1);
+            for(i=0;i<posicao.length;i++){
+                console.log(this.livros[posicao[i]]);
+                this.livros.splice(posicao[i],1);
+            }   
             return true;
         }else{
             return false;
         }
     }
 
-
-    buscarPosicaoLivro(titulo:string){
+    buscarPosicaoLivro(titulo:string,autor:string,categoria:string){
+        let livrosEncontrados: number[] = [];
         let i:number;
         for(i=0;i<this.livros.length;i++){
-            if(titulo == this.livros[i].titulo){
-                return i;
+            if(titulo && autor && categoria){
+                console.log(titulo,autor);
+                if(this.livros[i].titulo.toLowerCase().includes(titulo.toLowerCase().trim()) && this.livros[i].autor.toLowerCase().includes(autor.toLowerCase().trim()) && this.livros[i].categoria.toLowerCase().includes(categoria.toLowerCase().trim())){
+                    livrosEncontrados.push(i);
+                }
+            }else if(titulo || autor || categoria){
+                console.log(autor,titulo);
+                if(this.livros[i].titulo.toLowerCase().includes(titulo.toLowerCase().trim()) && this.livros[i].autor.toLowerCase().includes(autor.toLowerCase().trim()) && this.livros[i].categoria.toLowerCase().includes(categoria.toLowerCase().trim())){
+                    livrosEncontrados.push(i);
+                }
+            }else{
+                return undefined;
             }
         }
-        return undefined;
+        if(livrosEncontrados.length == 0){
+            return undefined;
+        }
+        return livrosEncontrados;
     }
 
-
-    buscarLivro(titulo:string){
-        let posicao : number | undefined;
-        posicao = this.buscarPosicaoLivro(titulo);
+    buscarLivro(titulo:string,autor:string,categoria:string){
+        let livrosEncontrados: Livro[] = [];
+        let posicao : number[] | undefined;
+        let i:number;
+        posicao = this.buscarPosicaoLivro(titulo,autor,categoria);
         if(posicao!=undefined){
-            return this.livros[posicao];
-        }else{
+            for(i=0;i<posicao.length;i++){
+                livrosEncontrados.push(this.livros[posicao[i]])
+            }
+            return livrosEncontrados;
+        }else if(livrosEncontrados){
             return undefined;
         }
     }
@@ -49,7 +68,23 @@ export class Biblioteca{
         return this.livros;
     }
 
+    emprestarLivro(livro:Livro): boolean {
+        if(livro.disponivel == false || undefined){
+            return false;
+        }else{
+            livro.disponivel = false;
+        }
+        return true;
+    }
+
+    receberLivro(livro:Livro): boolean {
+        if(livro.disponivel == true || undefined){
+            return false;
+        }else{
+            livro.disponivel = true;
+        }
+        return true
+    }
 
 }
-
 export let BibliotecaLivros = new Biblioteca();
