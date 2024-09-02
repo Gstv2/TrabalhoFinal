@@ -14,32 +14,55 @@ export function botaoAddClicado() {
     let titulo = document.getElementById('titulo').value;
     let autor = document.getElementById('autor').value;
     let categoria = document.getElementById('categoria').value;
-    if (verificarEntrada(titulo, autor, categoria)) {
-        console.log(titulo);
-        console.log(autor);
-        console.log(categoria);
-        BibliotecaLivros.cadastrarLivro(titulo, autor, categoria);
-        BibliotecaLivros.listarLivro();
-        mostrarMensagem('Livro ' + titulo + ' cadastrado com sucesso');
+    if (verificarEntrada(titulo, autor)) {
+        if (verficarLivroExistente(titulo, autor)) {
+            let cadastrado = BibliotecaLivros.cadastrarLivro(titulo, autor, categoria);
+            if (cadastrado) {
+                alert('Livro ' + titulo + ' cadastrado com sucesso');
+                botaoListClicado();
+            }
+            else {
+                mostrarMensagem('Livro ' + titulo + ' não encontrado!');
+            }
+        }
+        else {
+            mostrarMensagem("livro " + titulo + " ja cadastrado!");
+        }
+    }
+}
+function verficarLivroExistente(titulo, autor) {
+    let livros = BibliotecaLivros.buscarLivro(titulo, autor);
+    if (livros[0]) {
+        return false;
+    }
+    else {
+        return true;
     }
 }
 export function botaoRemoveClicado() {
     let titulo = document.getElementById('titulo').value;
     let autor = document.getElementById('autor').value;
-    let categoria = document.getElementById('categoria').value;
-    if (verificarEntrada(titulo, autor, categoria)) {
-        BibliotecaLivros.removerLivro(titulo, autor, categoria);
-        BibliotecaLivros.listarLivro();
-        mostrarMensagem('Livro ' + titulo + ' removido com sucesso');
+    if (verificarEntrada(titulo, autor)) {
+        if (!verficarLivroExistente(titulo, autor)) {
+            let removido = BibliotecaLivros.removerLivro(titulo, autor);
+            if (removido) {
+                alert('Livro ' + titulo + ' removido com sucesso');
+                botaoListClicado();
+            }
+            else {
+                mostrarMensagem('Livro ' + titulo + ' não encontrado!');
+            }
+        }
+        else {
+            mostrarMensagem('Livro ' + titulo + ' não encontrado!');
+        }
     }
 }
 export function botaoSearchClicado() {
     let titulo = document.getElementById('titulo').value;
     let autor = document.getElementById('autor').value;
-    let categoria = document.getElementById('categoria').value;
     let livros;
-    livros = BibliotecaLivros.buscarLivro(titulo, autor, categoria);
-    console.log(livros);
+    livros = BibliotecaLivros.buscarLivro(titulo, autor);
     if (livros) {
         lista.innerHTML = '';
         for (let i = 0; i < livros.length; i++) {
@@ -48,12 +71,32 @@ export function botaoSearchClicado() {
         }
     }
     else {
-        mostrarMensagem(`Livro ${titulo} não encontrado.`);
+        mostrarMensagem("Livro " + titulo + " não encontrado!!");
     }
 }
-function verificarEntrada(titulo, autor, categoria) {
-    if (titulo == "" || autor == "" || categoria == "") {
-        mostrarMensagem('Porfavor preencher todos os campos obrigatorios!!!');
+export function botaoFilterClick() {
+    let categoria = document.getElementById('categoria').value;
+    let disponivel = document.getElementById('Disponivel').value === "true";
+    let titulo = document.getElementById('titulo').value;
+    let autor = document.getElementById('autor').value;
+    let livros;
+    livros = BibliotecaLivros.filterLivro(titulo, autor, categoria, disponivel);
+    if (livros) {
+        lista.innerHTML = '';
+        for (let i = 0; i < livros.length; i++) {
+            let novoLi = converterLivrosParaLi(livros[i]);
+            lista.append(novoLi);
+        }
+    }
+    else {
+        mostrarMensagem("Nenhum livro encontrado!");
+    }
+}
+function verificarEntrada(titulo, autor) {
+    let tituloTrimmed = titulo.trim();
+    let autorTrimmed = autor.trim();
+    if (tituloTrimmed === "" || autorTrimmed === "") {
+        mostrarMensagem('Por favor preencher todos os campos obrigatórios!!!');
         return false;
     }
     else {
@@ -67,8 +110,7 @@ function verificarAutorTitulo(titulo, autor) {
             return false;
         }
         else if (titulo != "" && autor == "") {
-            let livro = BibliotecaLivros.buscarLivro(titulo, "", "");
-            console.log(livro);
+            let livro = BibliotecaLivros.buscarLivro(titulo, autor);
             let yesNot = prompt("O livro desejado é " + titulo + " da autora " + livro[0].autor + "?\n->sim\n->não");
             if (yesNot.toLowerCase() == "sim") {
                 return true;
@@ -86,55 +128,55 @@ function verificarAutorTitulo(titulo, autor) {
 export function botaoEmprestClicado() {
     let titulo = document.getElementById('titulo').value;
     let autor = document.getElementById('autor').value;
-    let categoria = document.getElementById('categoria').value;
     let livros;
-    livros = BibliotecaLivros.buscarLivro(titulo, autor, categoria);
-    console.log(livros);
-    if (livros) {
-        if (verificarAutorTitulo(titulo, autor)) {
-            for (let i = 0; i < livros.length; i++) {
-                let livro = BibliotecaLivros.emprestarLivro(livros[i]);
-                if (livro == true) {
-                    mostrarMensagem('Livro ' + titulo + ' alugado com sucesso');
+    if (verificarEntrada(titulo, autor)) {
+        livros = BibliotecaLivros.buscarLivro(titulo, autor);
+        if (livros) {
+            if (verificarAutorTitulo(titulo, autor)) {
+                for (let i = 0; i < livros.length; i++) {
+                    let livro = BibliotecaLivros.emprestarLivro(livros[i]);
+                    if (livro == true) {
+                        mostrarMensagem('Livro ' + titulo + ' alugado com sucesso');
+                    }
+                    else {
+                        mostrarMensagem('Detectamos um problema ao alugar o Livro ' + titulo + " ,Este livro ja deve ter sido alugado!");
+                    }
                 }
-                else {
-                    mostrarMensagem('Detectamos um problema ao alugar o Livro ' + titulo + " ,Este livro ja deve ter sido alugado!");
-                }
+            }
+            else {
+                mostrarMensagem('Livro não encontrado, porfavor informar titulo e autor(a).');
             }
         }
         else {
-            mostrarMensagem('Livro não encontrado, porfavor informar titulo e autor(a).');
+            mostrarMensagem('Livro ' + titulo + ' não encontrado.');
         }
-    }
-    else {
-        mostrarMensagem('Livro ' + titulo + ' não encontrado.');
     }
 }
 export function botaoDevolvClicado() {
     let titulo = document.getElementById('titulo').value;
     let autor = document.getElementById('autor').value;
-    let categoria = document.getElementById('categoria').value;
     let livros;
-    livros = BibliotecaLivros.buscarLivro(titulo, autor, categoria);
-    console.log(livros);
-    if (livros) {
-        if (verificarAutorTitulo(titulo, autor)) {
-            for (let i = 0; i < livros.length; i++) {
-                let livro = BibliotecaLivros.receberLivro(livros[i]);
-                if (livro == true) {
-                    mostrarMensagem('Livro ' + titulo + ' devolvido com sucesso');
+    if (verificarEntrada(titulo, autor)) {
+        livros = BibliotecaLivros.buscarLivro(titulo, autor);
+        if (livros) {
+            if (verificarAutorTitulo(titulo, autor)) {
+                for (let i = 0; i < livros.length; i++) {
+                    let livro = BibliotecaLivros.receberLivro(livros[i]);
+                    if (livro == true) {
+                        mostrarMensagem('Livro ' + titulo + ' devolvido com sucesso');
+                    }
+                    else {
+                        mostrarMensagem('Detectamos um problema ao devolver o Livro ' + titulo + " esse livro não foi alugado");
+                    }
                 }
-                else {
-                    mostrarMensagem('Detectamos um problema ao devolver o Livro ' + titulo + " esse livro não foi alugado");
-                }
+            }
+            else {
+                mostrarMensagem('Livro não encontrado, porfavor informar titulo e autor(a).');
             }
         }
         else {
-            mostrarMensagem('Livro não encontrado, porfavor informar titulo e autor(a).');
+            mostrarMensagem('Livro não encontrado.');
         }
-    }
-    else {
-        mostrarMensagem('Livro não encontrado.');
     }
 }
 function converterLivrosParaLi(livros) {
