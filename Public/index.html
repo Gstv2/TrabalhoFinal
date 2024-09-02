@@ -1,25 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de biblioteca</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <title>Sistema de Biblioteca</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_modal.css">
 </head>
+
 <body class="container mt-5">
-    <h1 class="mb-4">Cadastro de Livros</h1>
-    <form id="produtoForm">
-        <div class="mb-3">
-            <label for="titulo" class="form-label">Titulo:</label>
-            <input type="text" class="form-control" id="titulo" required>
+    <header>
+        <div class="logo">
+            <img src="https://www.ifpb.edu.br/prpipg/pesquisa/imagens-pesquisa/ifpb.png/@@images/0609b1d7-4a7d-41be-bd18-081ecb35eb9e.png"
+                alt="Library Logo">
+            <span>LIBRARY</span>
         </div>
-        <div class="mb-3">
-            <label for="autor" class="form-label">Autor:</label>
-            <input type="text" class="form-control" id="autor" required>
+        <h1>PROCURE POR SEUS <br> LIVROS FAVORITOS AQUI</h1>
+        <div class="buttons">
+            <button type="button" class="adicionar" data-bs-toggle="modal" data-bs-target="#cadastroModal">
+                Cadastrar Livro
+            </button>
+            <button type="button" class="remover" data-bs-toggle="modal" data-bs-target="#removerModal">
+                Remover Livro
+            </button>
         </div>
-        <div class="d-flex">
-            <div class="mb-3 me-3">
+    </header>
+
+    <main>
+        <div class="search-bar">
+            <input type="text" placeholder="Título Ex:. Harry Potter" id="titulo">
+            <input type="text" placeholder="Autor Ex:. J.K. Rowling" id="autor">
+            <div class="select-group">
                 <label for="categoria" class="form-label">Categoria:</label>
                 <select name="categoria" id="categoria" class="form-select">
                     <option value="Fantasia">Fantasia</option>
@@ -31,33 +43,137 @@
                     <option value="Aventura">Aventura</option>
                     <option value="Drama">Drama</option>
                 </select>
-            </div>
-            <div class="mb-3">
                 <label for="Disponivel" class="form-label">Disponível:</label>
                 <select name="Disponivel" id="Disponivel" class="form-select">
-                    <option value=true>Disponível</option>
-                    <option value=false>Indisponível</option>
+                    <option value="true">Disponível</option>
+                    <option value="false">Indisponível</option>
                 </select>
             </div>
-            <button type="button" id="filtrar" class="btn btn-warning">filtrar</button>
+            <button type="button" id="filtrar" class="btn btn-warning">Filtrar</button>
         </div>
-        
         <div class="d-flex gap-2">
-            <button type="button" id="adicionar" class="btn btn-primary">Adicionar Livro</button>
-            <button type="button" id="remover" class="btn btn-danger">Remover Livro</button>
-            <button type="button" id="buscar" class="btn btn-warning">Buscar Livros</button>
+            <button type="button" id="buscar" class="btn btn-warning">Buscar Livro</button>
             <button type="button" id="BotãoListar" class="btn btn-info">Listar Livros</button>
-            <button type="button" id="alugar" class="btn btn-warning">Alugar Livro</button>
+            <button type="button" id="alugar" class="btn btn-warning">Emprestar Livro</button>
             <button type="button" id="devolver" class="btn btn-info">Devolver Livro</button>
         </div>
-    </form>
+    </main>
 
-    <h2 class="mt-4">Resultado:</h2>
-    <div id="resultado" class="mt-3 p-3 border rounded">
-        
+    <!-- Modal para Cadastro de Livros -->
+    <div style="display: none;" class="modal fade" id="cadastroModal" tabindex="-1" aria-labelledby="cadastroModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="custom-modal">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="cadastroModalLabel">Cadastre o Seu Livro</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div>
+                            <label for="titulo_form" class="form-label">Título:</label>
+                            <input type="text" class="form-control" id="titulo_form" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="autor_form" class="form-label">Autor:</label>
+                            <input type="text" class="form-control" id="autor_form" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoria_form" class="form-label">Categoria:</label>
+                            <select name="categoria" id="categoria_form" class="form-select">
+                                <option value="Fantasia">Fantasia</option>
+                                <option value="Distopia">Distopia</option>
+                                <option value="Clássico">Clássico</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Ficção">Ficção</option>
+                                <option value="Realismo Mágico">Realismo Mágico</option>
+                                <option value="Aventura">Aventura</option>
+                                <option value="Drama">Drama</option>
+                            </select>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" id="adicionar" class="btn btn-primary" data-bs-dismiss="modal">Adicionar Livro</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modal para Remover Livros -->
+    <div style="display: none;" class="modal fade" id="removerModal" tabindex="-1" aria-labelledby="removerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="custom-modal">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="removerModalLabel">Remover Livro</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="removerForm">
+                        <div class="mb-3">
+                            <label for="titulo_remover" class="form-label">Título:</label>
+                            <input type="text" class="form-control" id="titulo_remover" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="autor_remover" class="form-label">Autor:</label>
+                            <input type="text" class="form-control" id="autor_remover" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoria_remover" class="form-label">Categoria:</label>
+                            <select name="categoria" id="categoria_remover" class="form-select">
+                                <option value="Fantasia">Fantasia</option>
+                                <option value="Distopia">Distopia</option>
+                                <option value="Clássico">Clássico</option>
+                                <option value="Romance">Romance</option>
+                                <option value="Ficção">Ficção</option>
+                                <option value="Realismo Mágico">Realismo Mágico</option>
+                                <option value="Aventura">Aventura</option>
+                                <option value="Drama">Drama</option>
+                            </select>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" id="remover" class="btn btn-primary" data-bs-dismiss="modal">Remover Livro</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="books-container">
+        <button class="scroll-button left" id="scroll-left">
+          <i class="fa fa-chevron-left"></i>
+        </button>
+        
+        <div id="resultado">
+          <!-- Seus cartões de livro aqui -->
+        </div>
+        
+        <button class="scroll-button right" id="scroll-right">
+          <i class="fa fa-chevron-right"></i>
+        </button>
+    </div>
+
     <script type="module" src="./Js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('scroll-left').addEventListener('click', function() {
+            document.getElementById('resultado').scrollBy({
+                left: -200, // Ajuste conforme necessário
+                behavior: 'smooth'
+            });
+        });
+
+        document.getElementById('scroll-right').addEventListener('click', function() {
+            document.getElementById('resultado').scrollBy({
+                left: 200, // Ajuste conforme necessário
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
+
+
 </html>

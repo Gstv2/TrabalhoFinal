@@ -9,15 +9,15 @@ export function botaoListClicado(){
     livros = BibliotecaLivros.listarLivro();
     let i: number;
     for(i=0;i<livros.length;i++){
-        let novoLi = converterLivrosParaLi(livros[i]);
+        let novoLi = converterLivrosParaCard(livros[i]);
         lista.append(novoLi);
     }
 }
 
 export function botaoAddClicado(){
-    let titulo = (document.getElementById('titulo') as HTMLInputElement).value;
-    let autor = (document.getElementById('autor') as HTMLInputElement).value;
-    let categoria = (document.getElementById('categoria') as HTMLInputElement).value;
+    let titulo = (document.getElementById('titulo_form') as HTMLInputElement).value;
+    let autor = (document.getElementById('autor_form') as HTMLInputElement).value;
+    let categoria = (document.getElementById('categoria_form') as HTMLInputElement).value;
     if(verificarEntrada(titulo,autor)){
         if(verficarLivroExistente(titulo,autor)){
             let cadastrado = BibliotecaLivros.cadastrarLivro(titulo,autor,categoria);
@@ -68,7 +68,7 @@ export function botaoSearchClicado(){
     if(livros){ 
         lista.innerHTML = '';
         for(let i: number = 0;i<livros.length;i++){
-            let novoLi = converterLivrosParaLi(livros[i]);
+            let novoLi = converterLivrosParaCard(livros[i]);
             lista.append(novoLi);
         }
     } else {
@@ -86,7 +86,7 @@ export function botaoFilterClick(){
     if(livros){ 
         lista.innerHTML = '';
         for(let i: number = 0;i<livros.length;i++){
-            let novoLi = converterLivrosParaLi(livros[i]);
+            let novoLi = converterLivrosParaCard(livros[i]);
             lista.append(novoLi);
         }
     } else {
@@ -177,12 +177,24 @@ export function botaoDevolvClicado(){
     }
 }
 
+function converterLivrosParaCard(livro: Livro): HTMLElement {
+    let card = document.createElement('div');
+    card.className = 'book-card'; // Classe para estilizar o card
 
-function converterLivrosParaLi(livros:Livro):HTMLElement{
-    let novoLi = document.createElement('li');
-    novoLi.innerHTML = 'Titulo: ' + livros.titulo + '<br> Autor: ' + livros.autor +'<br>Categoria: '+livros.categoria+' <br> Disponivel: ' + livros.disponivel +'<br>';
-    return novoLi;
+    card.innerHTML = `
+        <div class="card-header">
+            <span class="title">${livro.titulo}</span>
+        </div>
+        <div class="card-body">
+            <p class="author">Autor: ${livro.autor}</p>
+            <p class="category">Categoria: ${livro.categoria}</p>
+            <p class="availability">Disponível: ${livro.disponivel}</p>
+        </div>
+    `;
+    
+    return card;
 }
+
 
 function mostrarMensagem(mensagem: string) {
     let resultadoDiv = document.getElementById('resultado');

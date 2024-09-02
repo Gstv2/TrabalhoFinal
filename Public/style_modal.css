@@ -1,0 +1,81 @@
+/* Estilo básico do modal */
+.custom-modal {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 500px;
+    margin: 50px auto;
+    position: relative;
+}
+
+/* Cabeçalho do modal */
+.custom-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+/* Título do modal */
+.custom-modal .modal-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Botão de fechar */
+.custom-modal .btn-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #000;
+    cursor: pointer;
+}
+
+/* Corpo do modal */
+.custom-modal .modal-body {
+    padding: 20px 0;
+}
+
+/* Estilo dos formulários */
+.custom-modal .form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Estilo dos botões */
+.custom-modal .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.custom-modal .btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+}
+
+.custom-modal .btn-danger {
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+}
+
+.custom-modal .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    color: #fff;
+}
+
+/* Fundo do modal */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
