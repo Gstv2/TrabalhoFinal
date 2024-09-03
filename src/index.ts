@@ -1,15 +1,18 @@
 import { cadastrarLivros } from './CadastrarLivros.js';
 import { botaoAddClicado } from './FunçõesBiblioteca.js';
-import { botaoRemoveClicado } from './FunçõesBiblioteca.js'
-import { botaoSearchClicado } from './FunçõesBiblioteca.js'
-import { botaoListClicado } from './FunçõesBiblioteca.js'
-import { botaoEmprestClicado } from './FunçõesBiblioteca.js'
-import { botaoDevolvClicado } from './FunçõesBiblioteca.js'
-import { botaoFilterClick } from './FunçõesBiblioteca.js'
+import { botaoRemoveClicado } from './FunçõesBiblioteca.js';
+import { botaoSearchClicado } from './FunçõesBiblioteca.js';
+import { botaoListClicado } from './FunçõesBiblioteca.js';
+import { botaoEmprestClicado } from './FunçõesBiblioteca.js';
+import { botaoDevolvClicado } from './FunçõesBiblioteca.js';
+import { botaoFilterClick } from './FunçõesBiblioteca.js';
+import { adicionarMaisLidosNovidades } from './FunçõesBiblioteca.js';
 
 
 
 cadastrarLivros();
+adicionarMaisLidosNovidades();
+
 
 
 let buttonList: HTMLElement | null = document.getElementById('BotãoListar');

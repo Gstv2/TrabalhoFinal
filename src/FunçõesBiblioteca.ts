@@ -1,5 +1,6 @@
 import { Livro } from "./Livro.js";
 import { BibliotecaLivros } from "./Biblioteca.js";
+import { Alugados } from "./Alugados.js";
 
 const lista : HTMLElement  = document.getElementById('resultado');
 
@@ -9,10 +10,11 @@ export function botaoListClicado(){
     livros = BibliotecaLivros.listarLivro();
     let i: number;
     for(i=0;i<livros.length;i++){
-        let novoLi = converterLivrosParaCard(livros[i]);
-        lista.append(novoLi);
+        let novoCard = converterLivrosParaCard(livros[i]);
+        lista.append(novoCard);
     }
 }
+
 
 export function botaoAddClicado(){
     let titulo = (document.getElementById('titulo_form') as HTMLInputElement).value;
@@ -24,8 +26,7 @@ export function botaoAddClicado(){
             if(cadastrado){
                 alert('Livro '+titulo+' cadastrado com sucesso');
                 botaoListClicado();
-            }else{
-                mostrarMensagem('Livro '+titulo+' não encontrado!');
+                adicionarMaisLidosNovidades();
             }
         }else{
             mostrarMensagem("livro "+titulo+" ja cadastrado!");
@@ -51,8 +52,7 @@ export function botaoRemoveClicado(){
             if(removido){
                 alert('Livro '+titulo+' removido com sucesso');
                 botaoListClicado();
-            }else{
-                mostrarMensagem('Livro '+titulo+' não encontrado!');
+                adicionarMaisLidosNovidades();
             }
         }else{
             mostrarMensagem('Livro '+titulo+' não encontrado!');
@@ -129,15 +129,18 @@ function verificarAutorTitulo(titulo:string,autor:string):boolean{
 }
 
 export function botaoEmprestClicado(){
-    let titulo = (document.getElementById('titulo') as HTMLInputElement).value;
-    let autor = (document.getElementById('autor') as HTMLInputElement).value;
+    let titulo = (document.getElementById('titulo_alugar') as HTMLInputElement).value;
+    let autor = (document.getElementById('autor_alugar') as HTMLInputElement).value;
+    let nomeAluno = (document.getElementById('nome_alugar') as HTMLInputElement).value;
+    let matricula = (document.getElementById('matricula_alugar') as HTMLInputElement).value;
+    let dataEntrega = new Date((document.getElementById('dataEntrega') as HTMLInputElement).value);
     let livros : Livro[] | undefined;
     if(verificarEntrada(titulo,autor)){
         livros = BibliotecaLivros.buscarLivro(titulo,autor);
         if(livros){
             if(verificarAutorTitulo(titulo,autor)){
                 for(let i: number = 0;i<livros.length;i++){
-                    let livro: boolean = BibliotecaLivros.emprestarLivro(livros[i]);
+                    let livro: boolean = BibliotecaLivros.alugarLivro(nomeAluno,matricula,livros[i].titulo,livros[i].autor,dataEntrega);
                     if(livro == true){
                         mostrarMensagem('Livro '+titulo+' alugado com sucesso');
                     }else{
@@ -153,15 +156,17 @@ export function botaoEmprestClicado(){
     }
 }
 export function botaoDevolvClicado(){
-    let titulo = (document.getElementById('titulo') as HTMLInputElement).value;
-    let autor = (document.getElementById('autor') as HTMLInputElement).value;
+    let titulo = (document.getElementById('titulo_devolucao') as HTMLInputElement).value;
+    let autor = (document.getElementById('autor_devolucao') as HTMLInputElement).value;
+    let nomeAluno = (document.getElementById('nome_devolucao') as HTMLInputElement).value;
+    let matricula = (document.getElementById('matricula_devolucao') as HTMLInputElement).value;
     let livros : Livro[];
     if(verificarEntrada(titulo,autor)){
         livros = BibliotecaLivros.buscarLivro(titulo,autor);
         if(livros){
             if(verificarAutorTitulo(titulo,autor)){
                 for(let i: number = 0;i<livros.length;i++){
-                    let livro: boolean = BibliotecaLivros.receberLivro(livros[i]);
+                    let livro: boolean = BibliotecaLivros.receberLivro(livros[i].titulo,livros[i].autor,nomeAluno,matricula);
                     if(livro == true){
                         mostrarMensagem('Livro '+titulo+' devolvido com sucesso');
                     }else{
@@ -195,9 +200,52 @@ function converterLivrosParaCard(livro: Livro): HTMLElement {
     return card;
 }
 
+function converterAlugadosParaCard(alugado: Alugados): HTMLElement {
+    let card = document.createElement('div');
+    card.className = 'books-Alugados'; // Classe para estilizar o card
+
+    card.innerHTML = `
+        <div class="card-header">
+            <span class="title">${alugado.tituloLivro}</span>
+        </div>
+        <div class="card-body">
+            <p class="author">Autor: ${alugado.autorLivro}</p>
+            <p class="category">Nome: ${alugado.nomeAluno}</p>
+            <p class="availability">Matricula: ${alugado.matricula}</p>
+        </div>
+    `;
+    
+    return card;
+}
+
+// Função para adicionar livros à seção "Mais Lidos"
+export function adicionarMaisLidosNovidades() {
+    const containerMaisLidos: HTMLElement = document.getElementById('books-MaisLidos');
+    const containerNovidades: HTMLElement = document.getElementById('books-Novidades');
+    let maisLidos: Livro[] = [];
+    let Novidades: Livro[] = [];
+    let livros: Livro[] = BibliotecaLivros.listarLivro();
+    let i: number;
+    for(i = 0;i<8;i++){
+        maisLidos.push(livros[i]);
+    }
+    for(i = 0;i<maisLidos.length;i++){
+        let novoCard = converterLivrosParaCard(maisLidos[i]);
+        containerMaisLidos.append(novoCard);
+    }
+    for(i = livros.length-8;i<livros.length;i++){
+        Novidades.push(livros[i]);
+    }
+    for(i = 0;i<Novidades.length;i++){
+        let novoCardNovidades = converterLivrosParaCard(Novidades[i]);
+        containerNovidades.append(novoCardNovidades);
+    }
+}
+
+
 
 function mostrarMensagem(mensagem: string) {
-    let resultadoDiv = document.getElementById('resultado');
+    let resultadoDiv = document.getElementById('resultado-text');
     if(resultadoDiv) {
         resultadoDiv.innerHTML = mensagem;
     }

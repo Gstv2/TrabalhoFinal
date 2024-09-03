@@ -1,7 +1,9 @@
 import { Livro } from "./Livro.js";
+import { Alugados } from "./Alugados.js";
 export class Biblioteca {
     constructor() {
         this.livros = [];
+        this.alugados = [];
     }
     cadastrarLivro(titulo, autor, categoria) {
         let novoLivro = new Livro(titulo, autor, categoria);
@@ -117,23 +119,36 @@ export class Biblioteca {
     listarLivro() {
         return this.livros;
     }
-    emprestarLivro(livro) {
-        if (livro.disponivel == false || undefined) {
-            return false;
+    alugarLivro(nomeAluno, matricula, titulo, autor, dataEntrega) {
+        for (let i = 0; i < this.livros.length; i++) {
+            let livro = this.livros[i];
+            if (livro.titulo === titulo && livro.autor === autor && livro.disponivel) {
+                livro.disponivel = false;
+                let novoEmprestimo = new Alugados(nomeAluno, matricula, dataEntrega, titulo, autor);
+                this.alugados.push(novoEmprestimo);
+                return true;
+            }
         }
-        else {
-            livro.disponivel = false;
-        }
-        return true;
+        return false;
     }
-    receberLivro(livro) {
-        if (livro.disponivel == true || undefined) {
-            return false;
+    receberLivro(titulo, autor, nomeAluno, matricula) {
+        for (let i = 0; i < this.livros.length; i++) {
+            let livro = this.livros[i];
+            if (livro.titulo === titulo && livro.autor === autor && !livro.disponivel) {
+                livro.disponivel = true;
+                for (let i = 0; i < this.alugados.length; i++) {
+                    let alugado = this.alugados[i];
+                    if (alugado.tituloLivro === titulo && alugado.autorLivro === autor && alugado.nomeAluno == nomeAluno && alugado.matricula == matricula) {
+                        this.alugados.splice(i, 1);
+                    }
+                }
+                return true;
+            }
         }
-        else {
-            livro.disponivel = true;
-        }
-        return true;
+        return false;
+    }
+    listarEmprestar() {
+        return this.alugados;
     }
 }
 export let BibliotecaLivros = new Biblioteca();

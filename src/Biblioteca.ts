@@ -1,11 +1,15 @@
 import { Livro } from "./Livro.js";
+import { Alugados } from "./Alugados.js";
 
 export class Biblioteca{
     livros: Livro[];
+    alugados: Alugados[];
 
     constructor(){
         this.livros = [];
+        this.alugados = [];
     }
+
     cadastrarLivro(titulo:string,autor:string,categoria:string){
         let novoLivro = new Livro(titulo,autor,categoria);
         this.livros.push(novoLivro);
@@ -123,22 +127,36 @@ export class Biblioteca{
         return this.livros;
     }
 
-    emprestarLivro(livro:Livro): boolean {
-        if(livro.disponivel == false || undefined){
-            return false;
-        }else{
-            livro.disponivel = false;
-        }
-        return true;
-    }
+    
 
-    receberLivro(livro:Livro): boolean {
-        if(livro.disponivel == true || undefined){
-            return false;
-        }else{
-            livro.disponivel = true;
+    alugarLivro(nomeAluno: string, matricula: string, titulo: string, autor: string, dataEntrega: Date): boolean {
+        for (let i = 0; i < this.livros.length; i++) {
+            let livro = this.livros[i];
+            if (livro.titulo === titulo && livro.autor === autor && livro.disponivel) {
+                livro.disponivel = false;
+                let novoEmprestimo = new Alugados(nomeAluno, matricula, dataEntrega, titulo, autor);
+                this.alugados.push(novoEmprestimo);
+                return true;
+            }
         }
-        return true;
+        return false;
+    }
+    
+    receberLivro(titulo: string, autor: string,nomeAluno:string,matricula:string): boolean {
+        for (let i = 0; i < this.livros.length; i++) {
+            let livro = this.livros[i];
+            if (livro.titulo === titulo && livro.autor === autor && !livro.disponivel) {
+                livro.disponivel = true;
+                for (let i = 0; i < this.alugados.length; i++) {
+                    let alugado = this.alugados[i];
+                    if (alugado.tituloLivro === titulo && alugado.autorLivro === autor && alugado.nomeAluno == nomeAluno && alugado.matricula == matricula) {
+                        this.alugados.splice(i,1);
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
 }

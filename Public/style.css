@@ -220,13 +220,16 @@ body {
     justify-content: center;
     margin-top: 20px;
   }
+  
   .book-card {
+    flex: 0 0 auto; /* Garante que os cartões mantenham suas dimensões */
+    min-width: 200px; /* Largura mínima para os cartões */
+    max-width: 250px; /* Largura máxima para os cartões */
     border: 1px solid #444; /* Borda escura para combinar com o fundo */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra mais forte */
     margin: 10px;
     padding: 15px;
-    width: 200px;
     background-color: #2C3E50; /* Azul escuro para combinar com o fundo da tela */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     color: #ECF0F1; /* Texto claro para contraste */
@@ -259,50 +262,125 @@ body {
 }
 
 .books-container {
-    display: flex;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    overflow: hidden; /* Oculta qualquer conteúdo que exceda a área visível */
+  display: flex;
+  align-items: center;
+  background-color: #444;
+  position: relative;
+  width: 100%;
+  overflow: hidden; /* Oculta qualquer conteúdo que exceda a área visível */
+  margin-top: 4rem;
+  margin-bottom: 3rem;
 }
 
+/* Seção de Livros por Categoria */
+#books-container-categoria {
+
+  align-items: center;
+  position: relative;
+  width: 100%;
+  overflow: hidden; /* Oculta qualquer conteúdo que exceda a área visível */
+}
+
+/* Categoria */
+.category-section {
+  align-items: center;
+  background-color: #444;
+  position: relative;
+  width: 100%;
+  overflow: hidden; /* Oculta qualquer conteúdo que exceda a área visível */
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+}
+
+.category-section h3 {
+  font-size: 1.5rem;
+  text-align: start;
+  margin-left: 2rem;
+  margin-bottom: 15px;
+  color: #FFD700;
+}
+
+/* Estilo dos cartões de livros */
+#books-MaisLidos, #books-Novidades {
+  display: flex;
+  gap: 10px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding: 10px;
+}
+
+#books-MaisLidos .book-card, #books-Novidades .book-card {
+  flex: 0 0 auto; /* Garante que os cartões mantenham suas dimensões */
+  min-width: 200px; /* Largura mínima para os cartões */
+  max-width: 250px; /* Largura máxima para os cartões */
+  border: 1px solid #444; /* Borda escura para combinar com o fundo */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra mais forte */
+  margin: 10px;
+  padding: 15px;
+  background-color: #2C3E50; /* Azul escuro para combinar com o fundo da tela */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #ECF0F1; /* Texto claro para contraste */
+}
+
+#books-MaisLidos .book-card img, #books-Novidades .book-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+#books-MaisLidos .book-card h4, #books-Novidades .book-card h4 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
 #resultado {
     display: flex;
     flex-wrap: nowrap; /* Impede que os cartões movam-se para a linha seguinte */
-    overflow-x: auto; /* Adiciona rolagem horizontal */
+    overflow-x: hidden;
     scroll-behavior: smooth; /* Adiciona um efeito suave ao rolar */
-    max-height: 600px; /* Ajuste conforme necessário */
-    padding: 10px;
+    padding: 40px;
+    margin-top: 40px;
+}
+
+.title-result{
+  text-align: center;
+  color: #FFD700;
+  font-size: 34px;
+}
+
+#resulta-text{
+  display: flex;
+  text-align: center;
+  color: #2c2c2c;
+  width: 100%;
 }
 
 .scroll-button {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    width: 40px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1;
+  background-color: none;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  top: 10px; /* Ajusta a distância do topo do contêiner */
+  z-index: 1;
 }
 
 .scroll-button i {
-    font-size: 20px;
-    color: #333;
+  font-size: 20px;
+  color: #333;
 }
 
 .scroll-button.left {
-    left: 10px; /* Ajuste conforme necessário */
+  right: 70px; /* Ajuste conforme necessário */
 }
 
 .scroll-button.right {
-    right: 10px; /* Ajuste conforme necessário */
+  right: 10px; /* Ajuste conforme necessário */
 }
 
 
@@ -313,6 +391,10 @@ body {
   @media (max-width: 768px) {
     header {
       padding: 20px 15px;
+    }
+
+    h1{
+      font-size: 15px;
     }
   
     .logo span {
